@@ -197,7 +197,7 @@
                     password_confirmation: '',
                 },
 
-                accountCreated: true,
+                accountCreated: false,
 
                 registeringEmail: null,
 
@@ -220,9 +220,9 @@
             passwordsMatch(){
                 if (
                     this.registrationForm.password !== ''
-                    && this.registrationForm.confirmedPassword!== ''
+                    && this.registrationForm.password_confirmation !== ''
                 ){
-                    return this.registrationForm.password === this.registrationForm.confirmedPassword? true : false
+                    return this.registrationForm.password === this.registrationForm.password_confirmation? true : false
                 }
                 return null
             },

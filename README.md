@@ -1,6 +1,8 @@
 # pet-clicker
 
 ## Project setup
+Create a .env file and add the following variable:
+`VUE_APP_PET_CLICKER_API_URL="{{docker_app_url}}`
 ```
 npm install
 ```

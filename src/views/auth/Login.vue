@@ -182,6 +182,7 @@
                     }
                   
                 } catch( error ){
+                    console.log(error)
                     this.loggingIn = false
                     this.showLoginForm = true
                     if (error.response.data.message = 'The given data was invalid.'){

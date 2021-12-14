@@ -1,7 +1,11 @@
 import qs from 'qs';
 import axios from 'axios';
+import { AES } from 'crypto-js'
+import UTF8 from 'crypto-js/enc-utf8'
+const cryptoKey = process.env.VUE_APP_CRYPTO_KEY || ''
 const BASE_URL = process.env.VUE_APP_PET_CLICKER_API_URL;
-const ACCESS_TOKEN = window.localStorage.getItem('pet_clicker_token');
+const encryptedToken = window.localStorage.getItem('pet_clicker_token') || null
+const ACCESS_TOKEN =  encryptedToken ? AES.decrypt(encryptedToken, cryptoKey).toString(UTF8) : null
 
 export default {
     async register(formData = {}){

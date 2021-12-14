@@ -1,8 +1,25 @@
-import api from '../../api';
+import api from '../../api'
+import { AES } from 'crypto-js'
+import UTF8 from 'crypto-js/enc-utf8'
+const cryptoKey = process.env.VUE_APP_CRYPTO_KEY || ''
+
+function getUserFromLocalStorage() {
+    const user = window.localStorage.getItem('current_user')
+    if(!user) return null
+    
+    return JSON.parse(AES.decrypt(user, cryptoKey).toString(UTF8))
+}
+
+function getUserTokenFromLocalStorage(){
+    const token = window.localStorage.getItem('pet_clicker_token')
+    if (!token) return null
+
+    return AES.decrypt(token, cryptoKey).toString(UTF8)
+}
 
 const state = {
-    token: window.localStorage.getItem('pet_clicker_token'),
-    current_user: JSON.parse(window.localStorage.getItem('current_user') || '{}'),
+    token: getUserTokenFromLocalStorage(),
+    current_user: getUserFromLocalStorage()
 };
 
 const getters = {
@@ -20,9 +37,11 @@ const actions = {
     },
 
     finalizeLogin: ({ commit }, data) => {
+        const userToken = AES.encrypt(data.token, cryptoKey).toString()
+        const encryptedUser = AES.encrypt(JSON.stringify(data.user), cryptoKey).toString()
         commit('setToken', data.token)
-        window.localStorage.setItem('pet_clicker_token', data.token)
-        window.localStorage.setItem('current_user', JSON.stringify(data.user))
+        window.localStorage.setItem('pet_clicker_token', userToken)
+        window.localStorage.setItem('current_user', encryptedUser)
         commit('setUser', data.user)
 
         window.location = '/home/gallery'
